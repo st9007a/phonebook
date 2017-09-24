@@ -5,24 +5,38 @@
 
 #include "phonebook_opt.h"
 
-/* TODO: FILL YOUR OWN IMPLEMENTATION HERE! */
-entry *findName(char lastName[], entry *pHead)
+unsigned int BKDRHash(char *str)
 {
-    while (pHead != NULL) {
-        if (strcasecmp(lastName, pHead->lastName) == 0)
-            return pHead;
-        pHead = pHead->pNext;
+    unsigned int seed = 131;
+    unsigned int hash = 0;
+
+    while (*str) {
+        hash = hash * seed + (*str++);
     }
-    return NULL;
+
+    return (hash & 0x7FFFFFFF);
 }
 
-entry *append(char lastName[], entry *e)
+entry *findName(char lastName[], hashTable *table)
 {
-    /* allocate memory for the new entry and put lastName */
-    e->pNext = (entry *) malloc(sizeof(entry));
-    e = e->pNext;
-    strcpy(e->lastName, lastName);
-    e->pNext = NULL;
+    unsigned int i = BKDRHash(lastName) % HASH_TABLE_SIZE;
+    while (strcmp(table->cell[i]->lastName, lastName) != 0) {
+        i = (i + 1) % HASH_TABLE_SIZE;
+        if (!table->cell[i]) return NULL;
+    }
+    return table->cell[i];
 
-    return e;
+}
+
+void append(char lastName[], hashTable *table)
+{
+    unsigned int i = BKDRHash(lastName) % HASH_TABLE_SIZE;
+    while (table->cell[i]) {
+        i = (i + 1) % HASH_TABLE_SIZE;
+    }
+
+    entry *e = (entry *) malloc(sizeof(entry));
+    e->pInfo = (info *) malloc(sizeof(entry));
+    strcpy(e->lastName, lastName);
+    table->cell[i] = e;
 }
