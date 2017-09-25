@@ -2,7 +2,11 @@
 #define _PHONEBOOK_H
 
 #define MAX_LAST_NAME_SIZE 16
-#define HASH_TABLE_SIZE 350000
+// #define HASH_TABLE_SIZE 499857
+// #define HASH_TABLE_SIZE 465533
+// #define HASH_TABLE_SIZE 437375
+#define HASH_TABLE_SIZE 388777
+// #define HASH_TABLE_SIZE 350000
 
 typedef struct __PHONE_BOOK_INFO {
     char firstName[16];
@@ -26,7 +30,6 @@ typedef struct {
 } hashTable;
 
 unsigned int BKDRHash(char *str);
-unsigned int APHash(char *str);
 entry *findName(char lastName[], hashTable *table);
 void append(char lastName[], hashTable *table);
 

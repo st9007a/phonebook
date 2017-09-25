@@ -3,7 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "phonebook_opt.h"
+#include "phonebook_openaddressing.h"
 
 unsigned int BKDRHash(char *str)
 {
