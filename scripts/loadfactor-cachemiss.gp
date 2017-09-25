@@ -5,7 +5,7 @@ set title 'cache performance comparison'
 set term png enhanced font 'Verdana,10'
 set output 'cachemiss.png'
 
-plot [:][:50]'src/cache.txt' using 2:xtic(1) with histogram title 'original', \
+plot [:][:50]'src/loadfactor-cachemiss.txt' using 2:xtic(1) with histogram title 'original', \
 '' using 3:xtic(1) with histogram title '0.8'  , \
 '' using 4:xtic(1) with histogram title '0.75'  , \
 '' using 5:xtic(1) with histogram title '0.7' , \
