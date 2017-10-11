@@ -16,16 +16,6 @@ $(GIT_HOOKS):
 
 SRCS_common = main.c
 
-# phonebook_orig: $(SRCS_common) phonebook_orig.c phonebook_orig.h
-# 	$(CC) $(CFLAGS_common) $(CFLAGS_orig) \
-# 		-DIMPL="\"$@.h\"" -o $@ \
-# 		$(SRCS_common) $@.c
-#
-# phonebook_chaining: $(SRCS_common) phonebook_chaining.c phonebook_chaining.h
-# 	$(CC) $(CFLAGS_common) $(CFLAGS_opt) \
-# 		-DIMPL="\"$@.h\"" -o $@ \
-# 		$(SRCS_common) $@.c
-
 phonebook_%: $(SRCS_common) phonebook_%.c phonebook_%.h
 	$(CC) $(CFLAGS_common) $(CFLAGS_opt) \
 		-DIMPL="\"$@.h\"" -o $@ \
