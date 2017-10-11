@@ -5,6 +5,8 @@
 *.list
 *.swp
 *.bak
+phonebook_chaining
+phonebook_openaddressing
 phonebook_opt
 phonebook_orig
 calculate

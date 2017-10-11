@@ -3,7 +3,8 @@ CFLAGS_common ?= -Wall -std=gnu99
 CFLAGS_orig = -O0
 CFLAGS_opt  = -O0
 
-EXEC = phonebook_orig phonebook_opt
+EXEC = phonebook_chaining \
+	   phonebook_openaddressing
 
 GIT_HOOKS := .git/hooks/applied
 .PHONY: all
@@ -15,12 +16,17 @@ $(GIT_HOOKS):
 
 SRCS_common = main.c
 
-phonebook_orig: $(SRCS_common) phonebook_orig.c phonebook_orig.h
-	$(CC) $(CFLAGS_common) $(CFLAGS_orig) \
-		-DIMPL="\"$@.h\"" -o $@ \
-		$(SRCS_common) $@.c
+# phonebook_orig: $(SRCS_common) phonebook_orig.c phonebook_orig.h
+# 	$(CC) $(CFLAGS_common) $(CFLAGS_orig) \
+# 		-DIMPL="\"$@.h\"" -o $@ \
+# 		$(SRCS_common) $@.c
+#
+# phonebook_chaining: $(SRCS_common) phonebook_chaining.c phonebook_chaining.h
+# 	$(CC) $(CFLAGS_common) $(CFLAGS_opt) \
+# 		-DIMPL="\"$@.h\"" -o $@ \
+# 		$(SRCS_common) $@.c
 
-phonebook_opt: $(SRCS_common) phonebook_opt.c phonebook_opt.h
+phonebook_%: $(SRCS_common) phonebook_%.c phonebook_%.h
 	$(CC) $(CFLAGS_common) $(CFLAGS_opt) \
 		-DIMPL="\"$@.h\"" -o $@ \
 		$(SRCS_common) $@.c
@@ -30,12 +36,12 @@ run: $(EXEC)
 	watch -d -t "./phonebook_orig && echo 3 | sudo tee /proc/sys/vm/drop_caches"
 
 cache-test: $(EXEC)
+	# perf stat --repeat 100 \
+	# 	-e cache-misses,cache-references,instructions,cycles \
+	# 	./phonebook_orig
 	perf stat --repeat 100 \
 		-e cache-misses,cache-references,instructions,cycles \
-		./phonebook_orig
-	perf stat --repeat 100 \
-		-e cache-misses,cache-references,instructions,cycles \
-		./phonebook_opt
+		./phonebook_chaining
 
 output.txt: cache-test calculate
 	./calculate
