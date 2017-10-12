@@ -5,7 +5,7 @@
 #include <assert.h>
 #include <memory.h>
 
-#include IMPL
+#include "phonebook.h"
 
 #ifdef OPT
 #define OUT_FILE "opt.txt"
@@ -43,19 +43,13 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    /* build the entry */
-    /* entry *pHead, *e; */
-    /* pHead = (entry *) malloc(sizeof(entry)); */
-    printf("size of entry : %lu bytes\n", sizeof(entry));
-    /* e = pHead; */
-    /* e->pNext = NULL; */
+    printf("size of entry : %lu bytes\n", getEntrySize());
 
     /* build hash table */
-    hashTable *table = (hashTable *) malloc(sizeof(hashTable));
-    memset(table->cell, '\0', HASH_TABLE_SIZE);
+    hashTable *table = newHashTable();
 
 #if defined(__GNUC__)
-    __builtin___clear_cache((char *) table, (char *)table + sizeof(hashTable));
+    __builtin___clear_cache((char *) table, (char *)table + getHashTableSize());
 #endif
     clock_gettime(CLOCK_REALTIME, &start);
     while (fgets(line, sizeof(line), fp)) {
@@ -78,11 +72,11 @@ int main(int argc, char *argv[])
     /* e = pHead; */
 
     assert(findName(input, table) &&
-           "Did you implement findName() in " IMPL "?");
-    assert(0 == strcmp(findName(input, table)->lastName, "zyxel"));
+           "Did you implement findName() in ' phonebook.h '?");
+    assert(0 == strcmp(getLastName(findName(input, table)), "zyxel"));
 
 #if defined(__GNUC__)
-    __builtin___clear_cache((char *) table, (char *) table + sizeof(hashTable));
+    __builtin___clear_cache((char *) table, (char *) table + getHashTableSize());
 #endif
     /* compute the execution time */
     clock_gettime(CLOCK_REALTIME, &start);

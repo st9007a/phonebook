@@ -16,9 +16,9 @@ $(GIT_HOOKS):
 
 SRCS_common = main.c
 
-phonebook_%: $(SRCS_common) phonebook_%.c phonebook_%.h
+phonebook_%: $(SRCS_common) phonebook_%.c phonebook.h
 	$(CC) $(CFLAGS_common) $(CFLAGS_opt) \
-		-DIMPL="\"$@.h\"" -o $@ \
+		-o $@ \
 		$(SRCS_common) $@.c
 
 run: $(EXEC)
