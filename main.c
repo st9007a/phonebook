@@ -66,11 +66,11 @@ int main(int argc, char *argv[])
     fclose(fp);
 
     /* the givn last name to find */
-    char input[MAX_LAST_NAME_SIZE] = "zyxel";
+    char input[MAX_LAST_NAME_SIZE] = "zsa";
 
     assert(findName(input, table) &&
            "Did you implement findName() in ' phonebook.h '?");
-    assert(0 == strcmp(getLastName(findName(input, table)), "zyxel"));
+    assert(0 == strcmp(getLastName(findName(input, table)), "zsa"));
 
 #if defined(__GNUC__)
     __builtin___clear_cache((char *) table, (char *) table + getHashTableSize());

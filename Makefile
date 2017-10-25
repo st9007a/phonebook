@@ -21,17 +21,23 @@ phonebook_%: $(SRCS_common) phonebook_%.c phonebook.h
 		-o $@ \
 		$(SRCS_common) $@.c
 
+hash_test: test_hash.c hash_func.h phonebook.h
+	$(CC) $(CFLAGS_common) $(CFLAGS_opt) -o test_hash test_hash.c
+
 run: $(EXEC)
 	echo 3 | sudo tee /proc/sys/vm/drop_caches
 	watch -d -t "./phonebook_orig && echo 3 | sudo tee /proc/sys/vm/drop_caches"
 
 cache-test: $(EXEC)
-	# perf stat --repeat 100 \
-	# 	-e cache-misses,cache-references,instructions,cycles \
-	# 	./phonebook_orig
+	perf stat --repeat 100 \
+		-e cache-misses,cache-references,instructions,cycles \
+		./phonebook_openaddressing
 	perf stat --repeat 100 \
 		-e cache-misses,cache-references,instructions,cycles \
 		./phonebook_chaining
+
+hash: test_hash
+	./test_hash
 
 output.txt: cache-test calculate
 	./calculate

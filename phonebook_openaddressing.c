@@ -3,6 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "hash_func.h"
 #include "phonebook.h"
 
 typedef struct __PHONE_BOOK_INFO {
@@ -25,18 +26,6 @@ typedef struct __PHONE_BOOK_ENTRY {
 typedef struct __HASH_TABLE {
     entry *cell[HASH_TABLE_SIZE];
 } hashTable;
-
-static unsigned int BKDRHash(char *str)
-{
-    unsigned int seed = 131;
-    unsigned int hash = 0;
-
-    while (*str) {
-        hash = hash * seed + (*str++);
-    }
-
-    return (hash & 0x7FFFFFFF);
-}
 
 hashTable *newHashTable()
 {
